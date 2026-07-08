@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YourKitchen — Food as Medicine · Payer Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage:#3D6B4F; --sage-mid:#6B9E7E; --sage-light:#EAF2ED;
+    --cream:#FAFAF5; --forest:#1E2620; --stone:#6B7066;
+    --border:#DDE8E0; --white:#FFFFFF;
+    --gold:#B88B4A; --gold-deep:#C17F47; --gold-light:#F5EBDD; --star:#D9A441;
+    --heart:#C0463B;
+    --serif:'Lora',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif; --mono:'DM Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{ font-family:var(--sans); color:var(--forest); background:#EDEDE6; -webkit-font-smoothing:antialiased; line-height:1.55; padding:30px 16px; }
+  .page{ max-width:940px; margin:0 auto; background:var(--cream); border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(30,38,32,0.16); }
+
+  /* Masthead */
+  .mast{ background:var(--forest); color:var(--cream); padding:40px 46px 34px; position:relative; overflow:hidden; }
+  .mast::after{ content:''; position:absolute; right:-90px; top:-90px; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle, rgba(107,158,126,0.2), transparent 70%); }
+  .eyebrow{ font-size:11px; font-weight:500; letter-spacing:0.4em; text-transform:uppercase; color:var(--sage-mid); }
+  .brand-word{ font-family:var(--serif); font-size:32px; font-weight:500; letter-spacing:-0.01em; }
+  .fam-tag{ display:inline-block; margin-top:14px; background:rgba(184,139,74,0.16); border:1px solid rgba(184,139,74,0.42); color:#E7CF9F; font-size:10.5px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; padding:6px 13px; border-radius:30px; position:relative; z-index:1; }
+  .mast h1{ font-family:var(--serif); font-weight:500; font-size:25px; margin-top:22px; position:relative; z-index:1; max-width:640px; line-height:1.35; }
+  .mast .sub{ font-size:14px; color:rgba(250,250,245,0.72); margin-top:10px; max-width:600px; position:relative; z-index:1; }
+
+  section{ padding:34px 46px; border-bottom:1px solid var(--border); }
+  .sec-eyebrow{ font-size:10.5px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--sage); margin-bottom:8px; }
+  h2{ font-family:var(--serif); font-size:22px; font-weight:600; letter-spacing:-0.01em; margin-bottom:6px; }
+  .lead{ font-size:14px; color:var(--stone); max-width:660px; margin-bottom:20px; }
+  p{ font-size:13.5px; }
+
+  /* Thesis chain */
+  .chain{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; background:var(--white); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .link{ padding:18px 14px; text-align:center; position:relative; border-right:1px solid var(--border); }
+  .link:last-child{ border-right:none; }
+  .link .ic{ font-family:var(--serif); font-size:20px; font-weight:600; color:var(--sage); }
+  .link .t{ font-size:12px; font-weight:600; margin-top:8px; }
+  .link .s{ font-size:10.5px; color:var(--stone); margin-top:3px; line-height:1.4; }
+  .link.end{ background:var(--sage-light); } .link.end .ic{ color:var(--sage); }
+
+  /* Wedge callout */
+  .wedge{ background:var(--sage-light); border:1px solid var(--border); border-radius:14px; padding:22px 26px; margin-top:4px; }
+  .wedge .big{ font-family:var(--serif); font-size:19px; font-weight:600; margin-bottom:6px; }
+  .wedge p{ color:var(--forest); }
+  .wedge b{ color:var(--sage); }
+
+  /* Evidence cards */
+  .ev-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .ev{ background:var(--white); border:1px solid var(--border); border-radius:14px; padding:18px 20px; }
+  .ev .stat{ font-family:var(--serif); font-size:30px; font-weight:600; color:var(--forest); line-height:1; }
+  .ev .stat.warm{ color:var(--gold-deep); }
+  .ev .desc{ font-size:12px; color:var(--forest); margin-top:8px; line-height:1.45; }
+  .ev .src{ font-size:10.5px; color:var(--stone); margin-top:10px; font-style:italic; }
+  .ev-note{ font-size:12px; color:var(--stone); margin-top:16px; padding:12px 16px; background:var(--gold-light); border:1px solid rgba(184,139,74,0.3); border-radius:10px; }
+  .ev-note b{ color:var(--gold-deep); }
+
+  /* Calculator */
+  .calc{ background:var(--forest); color:var(--cream); border-radius:16px; overflow:hidden; }
+  .calc-in{ padding:24px 28px; display:grid; grid-template-columns:1fr 1fr; gap:18px 26px; }
+  .calc-field label{ display:block; font-size:11px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--sage-mid); margin-bottom:8px; }
+  .calc-field .row{ display:flex; align-items:center; gap:10px; }
+  .calc-field input[type=number]{ width:100%; font-family:var(--mono); font-size:15px; color:var(--forest); background:var(--cream); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:9px 11px; }
+  .calc-field input[type=range]{ flex:1; accent-color:var(--sage-mid); }
+  .calc-field .val{ font-family:var(--mono); font-size:14px; min-width:48px; text-align:right; color:#CDE3D5; }
+  .calc-field .hint{ font-size:10.5px; color:rgba(250,250,245,0.5); margin-top:5px; }
+  .calc-out{ background:rgba(107,158,126,0.12); border-top:1px solid rgba(255,255,255,0.12); padding:22px 28px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .out{ text-align:center; }
+  .out .n{ font-family:var(--serif); font-size:24px; font-weight:600; color:#F0E2C9; line-height:1; }
+  .out .n.net{ color:#CDE3D5; }
+  .out .l{ font-size:10px; color:rgba(250,250,245,0.6); margin-top:6px; letter-spacing:0.02em; }
+  .calc-headline{ padding:0 28px 22px; }
+  .calc-headline .hl{ background:var(--sage-mid); color:var(--forest); border-radius:10px; padding:13px 18px; font-size:13.5px; font-weight:600; text-align:center; }
+  .calc-disc{ font-size:11px; color:var(--stone); margin-top:14px; font-style:italic; }
+
+  /* Survey */
+  .survey-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+  .svy{ background:var(--white); border:1px solid var(--border); border-radius:12px; padding:16px 14px; text-align:center; }
+  .svy .emoji{ font-size:22px; }
+  .svy .metric{ font-family:var(--serif); font-size:22px; font-weight:600; color:var(--sage); margin-top:6px; }
+  .svy .name{ font-size:11px; font-weight:600; margin-top:4px; }
+  .svy .n{ font-size:10px; color:var(--stone); margin-top:2px; }
+  .svy.mood .metric{ color:var(--gold-deep); }
+  .survey-note{ font-size:12px; color:var(--stone); margin-top:16px; }
+  .survey-note b{ color:var(--forest); }
+
+  /* Protocols */
+  .proto-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .proto{ background:var(--white); border:1px solid var(--border); border-radius:12px; padding:16px 18px; display:flex; gap:14px; align-items:flex-start; }
+  .proto .dot{ width:12px; height:12px; border-radius:50%; margin-top:4px; flex-shrink:0; }
+  .proto .pname{ font-size:13.5px; font-weight:600; }
+  .proto .ptarget{ font-size:11.5px; color:var(--stone); margin-top:1px; }
+  .proto .pdesc{ font-size:11.5px; color:var(--forest); margin-top:6px; line-height:1.45; }
+  .proto-flow{ margin-top:16px; background:var(--sage-light); border:1px solid var(--border); border-radius:12px; padding:16px 20px; font-size:12.5px; }
+  .proto-flow b{ color:var(--sage); }
+  .proto-metric{ display:inline-flex; align-items:baseline; gap:6px; margin-top:10px; }
+  .proto-metric .m{ font-family:var(--serif); font-size:24px; font-weight:600; color:var(--sage); }
+  .proto-metric .ml{ font-size:11.5px; color:var(--stone); }
+
+  /* Pricing */
+  .price-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .pcard{ background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px 22px; }
+  .pcard .plabel{ font-size:10.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--sage); }
+  .pcard .pprice{ font-family:var(--serif); font-size:28px; font-weight:600; margin-top:8px; }
+  .pcard .pprice small{ font-size:13px; color:var(--stone); font-weight:400; }
+  .pcard .pbody{ font-size:12px; color:var(--stone); margin-top:8px; line-height:1.5; }
+  .pathways{ margin-top:16px; }
+  .pathways .pw{ font-size:12.5px; padding:8px 0 8px 20px; position:relative; border-bottom:0.5px solid var(--border); }
+  .pathways .pw:last-child{ border-bottom:none; }
+  .pathways .pw::before{ content:''; position:absolute; left:2px; top:14px; width:8px; height:8px; border-radius:50%; background:var(--sage-mid); }
+  .pathways .pw b{ color:var(--forest); }
+
+  /* Reporting */
+  .rep{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .rcard{ background:var(--white); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+  .rcard .rt{ font-size:13px; font-weight:600; margin-bottom:5px; }
+  .rcard .rb{ font-size:11.5px; color:var(--stone); line-height:1.45; }
+
+  .footer{ background:var(--forest); color:rgba(250,250,245,0.72); padding:26px 46px; font-size:11.5px; line-height:1.6; }
+  .footer b{ color:#CDE3D5; }
+  .footer .fw{ font-family:var(--serif); color:var(--cream); font-size:15px; margin-bottom:8px; }
+
+  @media(max-width:780px){
+    .chain{ grid-template-columns:1fr 1fr; } .ev-grid,.rep{ grid-template-columns:1fr; }
+    .survey-grid{ grid-template-columns:1fr 1fr; } .proto-grid,.price-grid{ grid-template-columns:1fr; }
+    .calc-in{ grid-template-columns:1fr; } .calc-out{ grid-template-columns:1fr 1fr; }
+    .mast,section,.footer{ padding-left:24px; padding-right:24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="mast">
+    <div class="eyebrow">Your Kitchen · Food as Medicine</div>
+    <div class="brand-word">YourKitchen</div>
+    <span class="fam-tag">For Health Plans · Employers · Managed Care</span>
+    <h1>The nutrition benefit members actually use — and the savings you can measure.</h1>
+    <div class="sub">A Food-as-Medicine and SDOH benefit that activates a member's own support network to deliver nutritious meals during the highest-risk windows: postpartum, post-discharge, active treatment, eldercare, and loss.</div>
+  </div>
+
+  <!-- THESIS -->
+  <section>
+    <div class="sec-eyebrow">The value chain</div>
+    <h2>How a warm meal becomes a lower cost of care</h2>
+    <p class="lead">The mechanism payers care about, in one line: the right food at the right moment keeps members out of the emergency department and the hospital.</p>
+    <div class="chain">
+      <div class="link"><div class="ic">1</div><div class="t">Right food, right window</div><div class="s">Nutritious meals during high-risk seasons</div></div>
+      <div class="link"><div class="ic">2</div><div class="t">Members engage</div><div class="s">Meals from loved ones get used</div></div>
+      <div class="link"><div class="ic">3</div><div class="t">Healthier behavior</div><div class="s">Better nutrition, less stress, adherence</div></div>
+      <div class="link"><div class="ic">4</div><div class="t">Fewer avoidable events</div><div class="s">Lower ED visits &amp; readmissions</div></div>
+      <div class="link end"><div class="ic">↓</div><div class="t">Lower total cost of care</div><div class="s">+ stronger quality &amp; Star measures</div></div>
+    </div>
+  </section>
+
+  <!-- WEDGE -->
+  <section>
+    <div class="sec-eyebrow">Why this benefit works when others don't</div>
+    <h2>Engagement is the prerequisite for savings</h2>
+    <div class="wedge">
+      <div class="big">A benefit nobody uses saves nothing.</div>
+      <p>Most food benefits fail on utilization — members never activate them. YourKitchen's meals come from the people who already love the member: family, friends, faith community, coworkers. That's why order value runs <b>~40% above standard meal-delivery benefits</b> and why members actually turn it on. No medically-tailored-meal vendor can replicate a member's own village — and engagement is the difference between a benefit on paper and outcomes you can bank.</p>
+    </div>
+  </section>
+
+  <!-- EVIDENCE -->
+  <section>
+    <div class="sec-eyebrow">The evidence base</div>
+    <h2>What Food-as-Medicine research shows</h2>
+    <p class="lead">Published results for medically-oriented food interventions in Medicaid and Medicare Advantage populations. YourKitchen operates in this category as the engagement layer — and measures your cohort against these benchmarks.</p>
+    <div class="ev-grid">
+      <div class="ev"><div class="stat">49%</div><div class="desc">fewer inpatient admissions among members receiving medically tailored meals; 16% lower total healthcare costs.</div><div class="src">Center for Health Care Strategies</div></div>
+      <div class="ev"><div class="stat">~31%</div><div class="desc">reduction in hospitalizations in a 2026 Massachusetts Medicaid study — with meal costs nearly fully offset by savings.</div><div class="src">Nature Medicine, 2026 · Tufts / Community Servings</div></div>
+      <div class="ev"><div class="stat warm">$1.57</div><div class="desc">saved for every $1 invested for Medicare beneficiaries with chronic conditions, via fewer readmissions.</div><div class="src">Bipartisan Policy Center</div></div>
+    </div>
+    <div class="ev-note"><b>An honest framing.</b> These figures are for dietitian-designed medically tailored meals — a clinical cousin of what YourKitchen delivers. We present them as the category's evidence base, not our own proven results. YourKitchen's role is to drive the engagement that makes these outcomes achievable, and to measure your population's actual utilization, satisfaction, and utilization-avoidance in-program.</div>
+  </section>
+
+  <!-- ROI CALCULATOR -->
+  <section>
+    <div class="sec-eyebrow">The ROI model</div>
+    <h2>Model the program against your population</h2>
+    <p class="lead">Set your own assumptions. Savings are modeled on published Food-as-Medicine evidence and concentrate in your high-risk, diet-sensitive members — adjust every input.</p>
+    <div class="calc">
+      <div class="calc-in">
+        <div class="calc-field">
+          <label>Covered members</label>
+          <div class="row"><input type="number" id="members" value="100000" min="0" step="1000" oninput="calc()"></div>
+          <div class="hint">Lives eligible for the benefit</div>
+        </div>
+        <div class="calc-field">
+          <label>Platform access — PMPM</label>
+          <div class="row"><input type="number" id="pmpm" value="0.75" min="0" step="0.05" oninput="calc()"></div>
+          <div class="hint">Per member, per month — YourKitchen fee</div>
+        </div>
+        <div class="calc-field">
+          <label>Activation rate — <span class="val" id="actV">55%</span></label>
+          <div class="row"><input type="range" id="activation" min="10" max="90" value="55" oninput="calc()"></div>
+          <div class="hint">Share who use the benefit (your village model runs high)</div>
+        </div>
+        <div class="calc-field">
+          <label>High-risk / diet-sensitive share — <span class="val" id="hrV">15%</span></label>
+          <div class="row"><input type="range" id="highrisk" min="2" max="40" value="15" oninput="calc()"></div>
+          <div class="hint">Where avoidable utilization concentrates</div>
+        </div>
+        <div class="calc-field" style="grid-column:1 / -1">
+          <label>Modeled avoided cost per engaged high-risk member / year</label>
+          <div class="row"><input type="number" id="avoided" value="2000" min="0" step="100" oninput="calc()"></div>
+          <div class="hint">Conservative vs. published net savings of ~$2,500/patient-year after meal costs</div>
+        </div>
+      </div>
+      <div class="calc-out">
+        <div class="out"><div class="n" id="oCost">$900K</div><div class="l">Annual program cost</div></div>
+        <div class="out"><div class="n" id="oEngaged">8,250</div><div class="l">Engaged high-risk members</div></div>
+        <div class="out"><div class="n net" id="oSavings">$16.5M</div><div class="l">Modeled annual savings</div></div>
+        <div class="out"><div class="n net" id="oNet">$15.6M</div><div class="l">Net impact</div></div>
+      </div>
+      <div class="calc-headline">
+        <div class="hl" id="headline">Every $1 in platform fee models to $18 in avoided healthcare cost.</div>
+      </div>
+    </div>
+    <div class="calc-disc">Illustrative model for discussion, not a guarantee. Savings depend on population risk, activation, and clinical targeting, and are validated against your cohort's in-program data.</div>
+  </section>
+
+  <!-- SOFT-TOUCH SURVEYS -->
+  <section>
+    <div class="sec-eyebrow">Member experience</div>
+    <h2>One tap after every delivery</h2>
+    <p class="lead">A soft-touch pulse the member answers in a single tap — feeding patient-reported outcomes your plan can report on, without survey fatigue.</p>
+    <div class="survey-grid">
+      <div class="svy"><div class="emoji">👍</div><div class="metric">96%</div><div class="name">Ease of use</div><div class="n">"was it simple"</div></div>
+      <div class="svy mood"><div class="emoji">🙂</div><div class="metric">+18</div><div class="name">Mood lift</div><div class="n">vs. baseline</div></div>
+      <div class="svy"><div class="emoji">⭐</div><div class="metric">4.9</div><div class="name">Food quality</div><div class="n">avg rating</div></div>
+      <div class="svy"><div class="emoji">🚚</div><div class="metric">94%</div><div class="name">Delivery</div><div class="n">on-time, warm</div></div>
+      <div class="svy"><div class="emoji">💚</div><div class="metric">92%</div><div class="name">Was it helpful</div><div class="n">"yes, this helped"</div></div>
+    </div>
+    <div class="survey-note"><b>Why it matters to you:</b> ease, mood, food quality, delivery, and helpfulness roll up into member-experience and PRO measures a plan needs for CAHPS, HEDIS, and Star-rating narratives — captured continuously, at the moment the meal arrives, not in an annual survey.</div>
+  </section>
+
+  <!-- CLINICAL PROTOCOLS -->
+  <section>
+    <div class="sec-eyebrow">Clinical nutrition protocols</div>
+    <h2>Gate the menu to the condition</h2>
+    <p class="lead">Assign a nutrition protocol to a member and their restaurant catalog narrows to compliant options — steering choices toward the guidelines that manage their condition.</p>
+    <div class="proto-grid">
+      <div class="proto"><span class="dot" style="background:#C0463B"></span><div><div class="pname">Heart-healthy · Low-sodium</div><div class="ptarget">Target: blood pressure</div><div class="pdesc">DASH-aligned meals; sodium ceilings; caps high-salt items from the catalog.</div></div></div>
+      <div class="proto"><span class="dot" style="background:#C17F47"></span><div><div class="pname">Low-cholesterol</div><div class="ptarget">Target: cholesterol / cardiac</div><div class="pdesc">Lean proteins, reduced saturated fat; flags fried and heavy-dairy options.</div></div></div>
+      <div class="proto"><span class="dot" style="background:#3D6B4F"></span><div><div class="pname">Diabetic-friendly · Low-glycemic</div><div class="ptarget">Target: blood sugar / A1C</div><div class="pdesc">Carb-aware meals; limits added sugar and refined-starch entrées.</div></div></div>
+      <div class="proto"><span class="dot" style="background:#6B9E7E"></span><div><div class="pname">Renal-supportive</div><div class="ptarget">Target: kidney / CKD</div><div class="pdesc">Manages sodium, potassium, and phosphorus loads in eligible options.</div></div></div>
+    </div>
+    <div class="proto-flow">
+      <b>How it works:</b> Care manager assigns a protocol at enrollment → the member's catalog gates to compliant restaurants and meals → every send is checked against the protocol → the plan sees a protocol-compliance rate per member and per population.
+      <div class="proto-metric"><span class="m">94%</span><span class="ml">of meals sent met the member's assigned nutrition protocol (sample population)</span></div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section>
+    <div class="sec-eyebrow">The model</div>
+    <h2>Priced to scale, funded through existing pathways</h2>
+    <div class="price-grid">
+      <div class="pcard">
+        <div class="plabel">Platform access</div>
+        <div class="pprice">$0.75 <small>/ member / month</small></div>
+        <div class="pbody">A predictable per-member-per-month fee for the full platform — provisioning, member management, delivery coordination, surveys, and reporting. Scales cleanly from a pilot cohort to a full book of business.</div>
+      </div>
+      <div class="pcard">
+        <div class="plabel">Food-as-Medicine subsidy</div>
+        <div class="pprice">Pass-through <small>+ take rate</small></div>
+        <div class="pbody">When the payer funds meals for targeted members, food flows through the platform with a transparent take rate — turning a covered benefit into measurable utilization, at an order value ~40% above standard delivery.</div>
+      </div>
+    </div>
+    <div class="pathways">
+      <div class="pw"><b>Medicaid managed care — In Lieu of Services (ILOS)</b> and value-added services for nutrition supports</div>
+      <div class="pw"><b>Section 1115 demonstration waivers</b> — active in ~19 states for nutrition-related HRSN benefits</div>
+      <div class="pw"><b>Medicare Advantage supplemental benefits</b> — SSBCI and post-discharge meal benefits</div>
+      <div class="pw"><b>Employers &amp; private plans</b> — the fastest-growing funding path as the field diversifies beyond Medicaid</div>
+    </div>
+  </section>
+
+  <!-- REPORTING -->
+  <section style="border-bottom:none">
+    <div class="sec-eyebrow">Accountability</div>
+    <h2>Everything you'd report on, exportable</h2>
+    <div class="rep">
+      <div class="rcard"><div class="rt">Utilization &amp; reach</div><div class="rb">Activation, meals delivered, distribution by region, condition, and care context — the equity story a plan is accountable for.</div></div>
+      <div class="rcard"><div class="rt">Outcomes &amp; experience</div><div class="rb">On-time rate, protocol compliance, satisfaction, mood, and helpfulness — PRO data ready for HEDIS, CAHPS, and Star narratives.</div></div>
+      <div class="rcard"><div class="rt">Audit &amp; grant reporting</div><div class="rb">Every enrollment, extension, and archive logged with user and timestamp; one-click board and funder exports.</div></div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div class="fw">Your kitchen, covered.</div>
+    <b>Modeling &amp; clinical note.</b> ROI figures are illustrative and depend on population risk, activation, and clinical targeting. Cited outcomes are from published medically-tailored-meal research and represent the Food-as-Medicine category, not YourKitchen's own results; YourKitchen validates outcomes against each cohort's in-program data. Nutrition protocols are designed with registered-dietitian oversight and are not a substitute for medical care.
+  </div>
+</div>
+
+<script>
+  function fmtUSD(n){
+    if(n>=1e9) return '$'+(n/1e9).toFixed(1)+'B';
+    if(n>=1e6) return '$'+(n/1e6).toFixed(1)+'M';
+    if(n>=1e3) return '$'+Math.round(n/1e3)+'K';
+    return '$'+Math.round(n);
+  }
+  function fmtNum(n){ return Math.round(n).toLocaleString('en-US'); }
+  function calc(){
+    var members=Math.max(0, +document.getElementById('members').value || 0);
+    var pmpm=Math.max(0, +document.getElementById('pmpm').value || 0);
+    var act=+document.getElementById('activation').value/100;
+    var hr=+document.getElementById('highrisk').value/100;
+    var avoided=Math.max(0, +document.getElementById('avoided').value || 0);
+
+    document.getElementById('actV').textContent=Math.round(act*100)+'%';
+    document.getElementById('hrV').textContent=Math.round(hr*100)+'%';
+
+    var cost=members*pmpm*12;
+    var engagedHR=members*act*hr;
+    var savings=engagedHR*avoided;
+    var net=savings-cost;
+    var ratio=cost>0?(savings/cost):0;
+
+    document.getElementById('oCost').textContent=fmtUSD(cost);
+    document.getElementById('oEngaged').textContent=fmtNum(engagedHR);
+    document.getElementById('oSavings').textContent=fmtUSD(savings);
+    document.getElementById('oNet').textContent=(net>=0?'':'-')+fmtUSD(Math.abs(net));
+    document.getElementById('headline').textContent='Every $1 in platform fee models to $'+ratio.toFixed(0)+' in avoided healthcare cost.';
+  }
+  calc();
+</script>
+<script>
+(function(){var last=0;function report(){var h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight);if(Math.abs(h-last)>2){last=h;try{parent.postMessage({ykHeight:h},'*');}catch(e){}}}
+window.addEventListener('load',function(){report();setTimeout(report,200);setTimeout(report,600);});
+window.addEventListener('resize',report);
+if(window.ResizeObserver){try{new ResizeObserver(report).observe(document.body);}catch(e){}}
+document.addEventListener('click',function(){setTimeout(report,120);setTimeout(report,400);});})();
+</script>
+</body>
+</html>
