@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YourKitchen — Member Detail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage:#3D6B4F; --sage-mid:#6B9E7E; --sage-light:#EAF2ED;
+    --cream:#FAFAF5; --forest:#1E2620; --stone:#6B7066;
+    --border:#DDE8E0; --white:#FFFFFF;
+    --gold:#B88B4A; --gold-deep:#C17F47; --gold-light:#F5EBDD; --star:#D9A441;
+    --heart:#C0463B;
+    --serif:'Lora',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif; --mono:'DM Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{ font-family:var(--sans); color:var(--forest); background:#EDEDE6; -webkit-font-smoothing:antialiased; line-height:1.45; padding:24px 14px; }
+  .sheet{ max-width:1120px; margin:0 auto; background:var(--cream); border-radius:18px; overflow:hidden; box-shadow:0 24px 60px rgba(30,38,32,0.16); }
+
+  /* Header */
+  .head{ background:var(--forest); color:var(--cream); padding:22px 34px 26px; position:relative; overflow:hidden; }
+  .head::after{ content:''; position:absolute; right:-70px; top:-90px; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, rgba(107,158,126,0.2), transparent 70%); }
+  .back{ font-size:12px; color:var(--sage-mid); text-decoration:none; font-weight:500; letter-spacing:0.02em; position:relative; z-index:1; }
+  .back:hover{ color:#CDE3D5; }
+  .id-row{ display:flex; justify-content:space-between; align-items:flex-end; margin-top:14px; gap:16px; flex-wrap:wrap; position:relative; z-index:1; }
+  .m-name{ font-family:var(--serif); font-size:27px; font-weight:600; }
+  .m-meta{ font-size:12.5px; color:rgba(250,250,245,0.66); margin-top:5px; }
+  .m-meta .mid{ font-family:var(--mono); }
+  .m-meta .dot{ opacity:.5; margin:0 7px; }
+  .chip{ display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; padding:4px 11px; border-radius:16px; }
+  .chip.active{ background:rgba(107,158,126,0.22); color:#CDE3D5; border:1px solid rgba(107,158,126,0.4); }
+  .hactions{ display:flex; gap:8px; }
+  .hbtn{ font-size:12px; font-weight:600; background:rgba(255,255,255,0.1); color:var(--cream); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:8px 13px; cursor:pointer; }
+  .hbtn:hover{ background:rgba(255,255,255,0.18); }
+  .hbtn.primary{ background:var(--sage-mid); border-color:var(--sage-mid); color:var(--forest); font-weight:700; }
+
+  /* Metric tiles */
+  .tiles{ display:grid; grid-template-columns:repeat(6,1fr); gap:1px; background:var(--border); border-bottom:1px solid var(--border); }
+  .tile{ background:var(--white); padding:16px 18px; }
+  .tile .num{ font-family:var(--serif); font-size:24px; font-weight:600; color:var(--forest); line-height:1; display:flex; align-items:baseline; gap:4px; }
+  .tile .num small{ font-size:12px; color:var(--stone); font-family:var(--sans); font-weight:500; }
+  .tile .lbl{ font-size:10px; color:var(--stone); margin-top:6px; letter-spacing:0.02em; }
+  .tile .star{ color:var(--star); }
+
+  /* Body grid */
+  .body{ display:grid; grid-template-columns:1fr 320px; gap:0; }
+  .main{ padding:26px 30px; border-right:1px solid var(--border); }
+  .side{ padding:26px 24px; background:var(--cream); }
+  .sec-title{ font-family:var(--serif); font-size:16px; font-weight:600; margin-bottom:3px; }
+  .sec-sub{ font-size:11.5px; color:var(--stone); margin-bottom:15px; }
+
+  /* Timeline */
+  .timeline{ position:relative; padding-left:22px; margin-bottom:32px; }
+  .timeline::before{ content:''; position:absolute; left:6px; top:4px; bottom:4px; width:2px; background:var(--border); }
+  .ev{ position:relative; padding:0 0 16px 0; }
+  .ev::before{ content:''; position:absolute; left:-22px; top:3px; width:12px; height:12px; border-radius:50%; background:var(--sage); border:2px solid var(--cream); }
+  .ev.warn::before{ background:var(--gold-deep); }
+  .ev.mute::before{ background:var(--stone); }
+  .ev.up::before{ background:var(--white); border:2px solid var(--sage-mid); }
+  .ev .when{ font-family:var(--mono); font-size:11px; color:var(--stone); }
+  .ev .what{ font-size:13px; margin-top:2px; }
+  .ev .what b{ font-weight:600; }
+  .ev .stars{ color:var(--star); font-size:12px; letter-spacing:1px; margin-left:4px; }
+
+  /* Ledger table */
+  .ledger{ width:100%; border-collapse:collapse; font-size:12.5px; margin-bottom:8px; }
+  .ledger th{ text-align:left; font-size:10px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--stone); padding:8px 8px; border-bottom:1.5px solid var(--border); }
+  .ledger td{ padding:10px 8px; border-bottom:1px solid #EAEDE9; vertical-align:middle; }
+  .ledger .rest{ font-weight:600; }
+  .ledger .meal{ color:var(--stone); font-size:11.5px; }
+  .prov{ font-family:var(--mono); font-size:10.5px; color:var(--stone); }
+  .ontime{ font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; padding:3px 8px; border-radius:14px; }
+  .ontime.on{ background:var(--sage-light); color:var(--sage); }
+  .ontime.late{ background:var(--gold-light); color:var(--gold-deep); }
+  .lstars{ color:var(--star); font-size:12px; letter-spacing:1px; white-space:nowrap; }
+  .ledger tfoot td{ border-bottom:none; padding-top:12px; font-weight:600; }
+  .ledger tfoot .tot{ font-family:var(--serif); }
+
+  /* Side: village */
+  .vcard{ background:var(--white); border:1px solid var(--border); border-radius:10px; padding:11px 13px; margin-bottom:9px; display:flex; justify-content:space-between; align-items:center; }
+  .vcard .who{ font-size:12.5px; font-weight:600; }
+  .vcard .rel{ font-size:11px; color:var(--stone); margin-top:1px; }
+  .vcard .contrib{ text-align:right; }
+  .vcard .cn{ font-family:var(--serif); font-size:16px; font-weight:600; color:var(--sage); }
+  .vcard .cl{ font-size:9.5px; color:var(--stone); letter-spacing:0.02em; }
+  .standby{ font-size:11.5px; color:var(--stone); text-align:center; padding:8px; background:var(--sage-light); border-radius:8px; margin-top:2px; }
+
+  /* Side: feedback */
+  .fb{ background:var(--white); border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:9px; }
+  .fb .q{ font-family:var(--serif); font-style:italic; font-size:13px; color:var(--forest); line-height:1.5; }
+  .fb .s{ color:var(--star); font-size:12px; letter-spacing:1px; margin-top:6px; }
+
+  /* Side: signals */
+  .signal{ display:flex; gap:9px; align-items:flex-start; background:var(--sage-light); border:1px solid var(--border); border-radius:10px; padding:11px 13px; margin-bottom:9px; font-size:12px; }
+  .signal .ic{ width:8px; height:8px; border-radius:50%; background:var(--sage); margin-top:5px; flex-shrink:0; }
+  .signal.warn{ background:var(--gold-light); } .signal.warn .ic{ background:var(--gold-deep); }
+  .signal b{ font-weight:600; }
+
+  .side h4{ font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--stone); margin:20px 0 10px; }
+  .side h4:first-child{ margin-top:0; }
+
+  .toast{ position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(120px); background:var(--forest); color:var(--cream); font-size:13px; padding:12px 20px; border-radius:30px; box-shadow:0 12px 30px rgba(0,0,0,0.28); transition:transform .35s cubic-bezier(.2,.8,.2,1); z-index:100; }
+  .toast.show{ transform:translateX(-50%) translateY(0); }
+
+  @media(max-width:860px){
+    .tiles{ grid-template-columns:repeat(3,1fr); }
+    .body{ grid-template-columns:1fr; } .main{ border-right:none; border-bottom:1px solid var(--border); }
+    .head,.main,.side{ padding-left:20px; padding-right:20px; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="head">
+    <a href="#" class="back" onclick="toast('Returns to the member table.');return false;">‹ All members</a>
+    <div class="id-row">
+      <div>
+        <div class="m-name">Marlene Otis</div>
+        <div class="m-meta">
+          <span class="mid">LSH-480356</span><span class="dot">·</span>Bexar · STAR+PLUS
+          <span class="dot">·</span>Illness / recovery<span class="dot">·</span>Care manager: María Reyes
+        </div>
+        <div style="margin-top:10px"><span class="chip active">Active · Day 24 of 42</span></div>
+      </div>
+      <div class="hactions">
+        <button class="hbtn" onclick="toast('Message drafted to Marlene.')">Message</button>
+        <button class="hbtn" onclick="toast('Window extended by 4 weeks.')">Extend window</button>
+        <button class="hbtn primary" onclick="exportReport()">Export member report</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="num">7</div><div class="lbl">Meals received</div></div>
+    <div class="tile"><div class="num"><span class="star">★</span>4.9</div><div class="lbl">Avg rating · 7 of 7 rated</div></div>
+    <div class="tile"><div class="num">86<small>%</small></div><div class="lbl">On-time · 6 of 7</div></div>
+    <div class="tile"><div class="num">5</div><div class="lbl">Active supporters</div></div>
+    <div class="tile"><div class="num">1<small>day</small></div><div class="lbl">Time to first meal</div></div>
+    <div class="tile"><div class="num">$153</div><div class="lbl">Benefit used to date</div></div>
+  </div>
+
+  <div class="body">
+    <div class="main">
+      <div class="sec-title">Care timeline</div>
+      <div class="sec-sub">The full journey from enrollment through today.</div>
+      <div class="timeline">
+        <div class="ev mute"><div class="when">Jun 13</div><div class="what"><b>Enrolled</b> by Lone Star Health Plan — María Reyes provisioned a 6-week window.</div></div>
+        <div class="ev"><div class="what"><div class="when">Jun 14</div><b>Activated by text</b> and set up her kitchen — 1 day to activate.</div></div>
+        <div class="ev"><div class="when">Jun 15</div><div class="what">First meal delivered · Torchy's Tacos<span class="stars">★★★★★</span></div></div>
+        <div class="ev warn"><div class="when">Jun 24</div><div class="what">Delivery ran <b>22 min late</b> · Bird Bakery — courier delay flagged<span class="stars">★★★★☆</span></div></div>
+        <div class="ev"><div class="when">Jun 28</div><div class="what">On track — <b>5 active supporters</b>, strong engagement.</div></div>
+        <div class="ev"><div class="when">Jul 3</div><div class="what">Most recent meal · Panera<span class="stars">★★★★★</span></div></div>
+        <div class="ev up"><div class="when">Jul 21</div><div class="what">Window ends — eligible for review or extension.</div></div>
+      </div>
+
+      <div class="sec-title">Delivery ledger</div>
+      <div class="sec-sub">Every meal, who sent it, courier, on-time status, cost, and rating.</div>
+      <table class="ledger">
+        <thead><tr><th>Date</th><th>Restaurant / meal</th><th>Sent by</th><th>Courier</th><th>Status</th><th>Cost</th><th>Rating</th></tr></thead>
+        <tbody>
+          <tr><td>Jun 15</td><td><div class="rest">Torchy's Tacos</div><div class="meal">Brisket bowl</div></td><td>Rosa (sister)</td><td class="prov">Uber</td><td><span class="ontime on">On time</span></td><td>$16.20</td><td class="lstars">★★★★★</td></tr>
+          <tr><td>Jun 18</td><td><div class="rest">Panera</div><div class="meal">Soup &amp; half sandwich</div></td><td>First Baptist</td><td class="prov">DoorDash</td><td><span class="ontime on">On time</span></td><td>$14.80</td><td class="lstars">★★★★★</td></tr>
+          <tr><td>Jun 21</td><td><div class="rest">Green Vegetarian</div><div class="meal">Buddha bowl</div></td><td>Rosa (sister)</td><td class="prov">Uber</td><td><span class="ontime on">On time</span></td><td>$17.10</td><td class="lstars">★★★★★</td></tr>
+          <tr><td>Jun 24</td><td><div class="rest">Bird Bakery</div><div class="meal">Roast chicken plate</div></td><td>Coworkers</td><td class="prov">DoorDash</td><td><span class="ontime late">Late 22m</span></td><td>$19.40</td><td class="lstars">★★★★☆</td></tr>
+          <tr><td>Jun 27</td><td><div class="rest">La Panadería</div><div class="meal">Chilaquiles</div></td><td>Rosa (sister)</td><td class="prov">Uber</td><td><span class="ontime on">On time</span></td><td>$15.90</td><td class="lstars">★★★★★</td></tr>
+          <tr><td>Jun 30</td><td><div class="rest">Torchy's Tacos</div><div class="meal">Fajita bowl</div></td><td>Dana (neighbor)</td><td class="prov">Uber</td><td><span class="ontime on">On time</span></td><td>$16.30</td><td class="lstars">★★★★★</td></tr>
+          <tr><td>Jul 3</td><td><div class="rest">Panera</div><div class="meal">Mac &amp; cheese + soup</div></td><td>First Baptist</td><td class="prov">DoorDash</td><td><span class="ontime on">On time</span></td><td>$18.73</td><td class="lstars">★★★★★</td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="5" style="color:var(--stone)">7 meals · 6 of 7 on time · avg ★4.9</td><td class="tot">$118.43</td><td class="prov">+ $34.20 delivery</td></tr></tfoot>
+      </table>
+    </div>
+
+    <div class="side">
+      <h4>Support network</h4>
+      <div class="vcard"><div><div class="who">Rosa Otis</div><div class="rel">Sister · primary</div></div><div class="contrib"><div class="cn">3</div><div class="cl">meals</div></div></div>
+      <div class="vcard"><div><div class="who">First Baptist Church</div><div class="rel">Care group</div></div><div class="contrib"><div class="cn">2</div><div class="cl">meals</div></div></div>
+      <div class="vcard"><div><div class="who">Dana Kimball</div><div class="rel">Neighbor</div></div><div class="contrib"><div class="cn">1</div><div class="cl">meal</div></div></div>
+      <div class="vcard"><div><div class="who">Marketing team</div><div class="rel">Coworkers</div></div><div class="contrib"><div class="cn">1</div><div class="cl">meal</div></div></div>
+      <div class="standby">+ 2 more supporters standing by in her circle</div>
+
+      <h4>Feedback</h4>
+      <div class="fb"><div class="q">"On time and still warm. Meant everything this week."</div><div class="s">★★★★★</div></div>
+      <div class="fb"><div class="q">"Loved having a warm meal without having to ask."</div><div class="s">★★★★★</div></div>
+
+      <h4>Signals</h4>
+      <div class="signal"><span class="ic"></span><div><b>Highly engaged.</b> Rated all 7 deliveries · 5 active supporters — strong social support.</div></div>
+      <div class="signal warn"><span class="ic"></span><div><b>Window closes in 18 days.</b> Review for extension or planned wind-down.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+  var tt;
+  function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(function(){t.classList.remove('show');},2500); }
+  function exportReport(){
+    var rows=[
+      ['YourKitchen — Member Report'],['Member','Marlene Otis'],['Member ID','LSH-480356'],['Plan','Bexar · STAR+PLUS'],['Reason','Illness / recovery'],['Window','6 weeks (Day 24 of 42)'],
+      [''],['Meals received','7'],['Avg rating','4.9'],['On-time','6 of 7 (86%)'],['Active supporters','5'],['Time to first meal','1 day'],['Benefit used','$152.63'],
+      [''],['Date','Restaurant','Meal','Sent by','Courier','Status','Cost','Rating'],
+      ['Jun 15','Torchy\'s Tacos','Brisket bowl','Rosa','Uber','On time','16.20','5'],
+      ['Jun 18','Panera','Soup & half sandwich','First Baptist','DoorDash','On time','14.80','5'],
+      ['Jun 21','Green Vegetarian','Buddha bowl','Rosa','Uber','On time','17.10','5'],
+      ['Jun 24','Bird Bakery','Roast chicken plate','Coworkers','DoorDash','Late 22m','19.40','4'],
+      ['Jun 27','La Panaderia','Chilaquiles','Rosa','Uber','On time','15.90','5'],
+      ['Jun 30','Torchy\'s Tacos','Fajita bowl','Dana','Uber','On time','16.30','5'],
+      ['Jul 3','Panera','Mac & cheese + soup','First Baptist','DoorDash','On time','18.73','5']
+    ];
+    var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+    var b=new Blob([csv],{type:'text/csv'}); var u=URL.createObjectURL(b);
+    var a=document.createElement('a'); a.href=u; a.download='marlene-otis-member-report.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(u);
+    toast('Member report exported.');
+  }
+</script>
+<script>
+(function(){var last=0;function report(){var h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight);if(Math.abs(h-last)>2){last=h;try{parent.postMessage({ykHeight:h},'*');}catch(e){}}}
+window.addEventListener('load',function(){report();setTimeout(report,200);setTimeout(report,600);});
+window.addEventListener('resize',report);
+if(window.ResizeObserver){try{new ResizeObserver(report).observe(document.body);}catch(e){}}
+document.addEventListener('click',function(){setTimeout(report,120);setTimeout(report,400);});})();
+</script>
+</body>
+</html>
