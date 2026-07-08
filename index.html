@@ -166,4 +166,7 @@
       inp.focus();
     });
   })();
-</script></body></html>
+</script><script>
+window.addEventListener('message',function(e){var d=e.data;if(!d||typeof d.ykHeight!=='number')return;var fr=document.querySelectorAll('iframe.demoframe');for(var i=0;i<fr.length;i++){if(fr[i].contentWindow===e.source){fr[i].style.height=(d.ykHeight+2)+'px';break;}}});
+</script>
+</body></html>

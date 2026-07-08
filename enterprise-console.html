@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YourKitchen — Organization Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage:#3D6B4F; --sage-mid:#6B9E7E; --sage-light:#EAF2ED;
+    --cream:#FAFAF5; --forest:#1E2620; --stone:#6B7066;
+    --border:#DDE8E0; --white:#FFFFFF;
+    --gold:#B88B4A; --gold-deep:#C17F47; --gold-light:#F5EBDD;
+    --heart:#C0463B;
+    --serif:'Lora',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--sans); color:var(--forest); background:#EDEDE6;
+    -webkit-font-smoothing:antialiased; line-height:1.5; padding:32px 16px;
+  }
+  .sheet{
+    max-width:1040px; margin:0 auto; background:var(--cream);
+    border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(30,38,32,0.16);
+  }
+
+  /* ── Masthead ── */
+  .masthead{ background:var(--forest); color:var(--cream); padding:34px 44px 30px; position:relative; overflow:hidden; }
+  .masthead::after{
+    content:''; position:absolute; right:-80px; top:-80px; width:320px; height:320px; border-radius:50%;
+    background:radial-gradient(circle, rgba(107,158,126,0.22), transparent 70%);
+  }
+  .brand-eyebrow{ font-size:11px; font-weight:500; letter-spacing:0.42em; text-transform:uppercase; color:var(--sage-mid); }
+  .brand-word{ font-family:var(--serif); font-size:30px; font-weight:500; letter-spacing:-0.01em; }
+  .masthead .biz-tag{
+    display:inline-flex; align-items:center; gap:7px; margin-top:14px;
+    background:rgba(184,139,74,0.16); border:1px solid rgba(184,139,74,0.42);
+    color:#E7CF9F; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+    padding:6px 13px; border-radius:30px; position:relative; z-index:1;
+  }
+  .org-row{ display:flex; justify-content:space-between; align-items:flex-end; margin-top:22px; position:relative; z-index:1; gap:20px; flex-wrap:wrap; }
+  .org-name{ font-family:var(--serif); font-size:23px; font-weight:500; color:var(--cream); }
+  .org-sub{ font-size:12.5px; color:rgba(250,250,245,0.62); margin-top:3px; }
+  .admin-badge{ text-align:right; font-size:12px; color:rgba(250,250,245,0.72); }
+  .admin-badge b{ color:#CDE3D5; font-weight:600; }
+
+  /* ── Toolbar ── */
+  .toolbar{ padding:22px 44px; border-bottom:1px solid var(--border); background:var(--white); }
+  .pool-line{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .pool-seats{ display:flex; gap:6px; }
+  .seat{ width:34px; height:10px; border-radius:6px; background:var(--sage-light); border:1px solid var(--border); }
+  .seat.used{ background:var(--sage); border-color:var(--sage); }
+  .pool-text{ font-size:13px; color:var(--stone); }
+  .pool-text b{ color:var(--forest); font-family:var(--serif); font-weight:600; }
+
+  .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:18px; }
+  .kpi{ background:var(--cream); border:1px solid var(--border); border-radius:12px; padding:13px 15px; }
+  .kpi .num{ font-family:var(--serif); font-size:26px; font-weight:600; color:var(--forest); line-height:1; }
+  .kpi .lbl{ font-size:11px; color:var(--stone); margin-top:5px; letter-spacing:0.02em; }
+  .kpi.warn .num{ color:var(--gold-deep); }
+  .kpi.end .num{ color:var(--heart); }
+
+  .actions{ display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; align-items:center; }
+  .btn{ font-family:var(--sans); font-size:13px; font-weight:600; border:none; cursor:pointer; padding:10px 18px; border-radius:9px; transition:.15s; }
+  .btn.primary{ background:var(--sage); color:#fff; }
+  .btn.primary:hover{ background:#345c44; }
+  .btn.primary:disabled{ background:#B7C9BD; cursor:not-allowed; }
+  .btn.ghost{ background:var(--white); color:var(--forest); border:1px solid var(--border); }
+  .btn.ghost:hover{ border-color:var(--sage-mid); }
+  .demo-ctrl{ margin-left:auto; display:flex; align-items:center; gap:8px; }
+  .demo-ctrl .demo-lbl{ font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--stone); }
+  .btn.demo{ background:var(--gold-light); color:var(--gold-deep); border:1px solid rgba(184,139,74,0.35); font-size:12px; padding:8px 13px; }
+  .btn.demo:hover{ background:#EFE1CC; }
+
+  /* ── Accounts ── */
+  .accounts{ padding:26px 44px 40px; }
+  .accounts h2{ font-family:var(--serif); font-size:17px; font-weight:600; margin-bottom:4px; }
+  .accounts .hint{ font-size:12.5px; color:var(--stone); margin-bottom:20px; }
+  .acct-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .acct{ background:var(--white); border:1px solid var(--border); border-radius:14px; padding:18px 20px; position:relative; }
+  .acct.ended{ background:#FBF3F2; border-color:#EBCFCC; }
+  .acct-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .acct-name{ font-family:var(--serif); font-size:17px; font-weight:600; }
+  .chip{ font-size:10.5px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; padding:4px 10px; border-radius:20px; white-space:nowrap; }
+  .chip.active{ background:var(--sage-light); color:var(--sage); }
+  .chip.expiring{ background:var(--gold-light); color:var(--gold-deep); }
+  .chip.ended{ background:#F4DAD7; color:var(--heart); }
+  .acct-contact{ font-size:12.5px; color:var(--stone); margin-top:6px; }
+  .reason{ display:inline-flex; align-items:center; gap:7px; margin-top:12px; font-size:12px; color:var(--forest); background:var(--cream); border:1px solid var(--border); padding:5px 11px; border-radius:20px; }
+  .reason .dot{ width:8px; height:8px; border-radius:50%; }
+
+  .countdown{ margin-top:15px; }
+  .cd-head{ display:flex; justify-content:space-between; align-items:baseline; font-size:12px; margin-bottom:6px; }
+  .cd-days{ font-family:var(--serif); font-weight:600; font-size:15px; }
+  .cd-days.ok{ color:var(--sage); } .cd-days.warn{ color:var(--gold-deep); } .cd-days.end{ color:var(--heart); }
+  .cd-len{ color:var(--stone); }
+  .bar{ height:8px; border-radius:6px; background:var(--sage-light); overflow:hidden; }
+  .bar .fill{ height:100%; border-radius:6px; transition:width .4s ease; }
+  .fill.ok{ background:var(--sage); } .fill.warn{ background:var(--gold-deep); } .fill.end{ background:var(--heart); }
+
+  .acct-actions{ display:flex; gap:8px; margin-top:15px; }
+  .mini{ font-size:12px; font-weight:600; border:none; cursor:pointer; padding:7px 13px; border-radius:8px; }
+  .mini.preview{ background:var(--cream); color:var(--forest); border:1px solid var(--border); }
+  .mini.preview:hover{ border-color:var(--sage-mid); }
+  .mini.recycle{ background:var(--sage); color:#fff; }
+  .mini.recycle:hover{ background:#345c44; }
+
+  .empty-slot{ border:1.5px dashed var(--border); border-radius:14px; padding:26px 20px; text-align:center; color:var(--stone); font-size:13px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; min-height:150px; }
+  .empty-slot button{ background:var(--sage-light); color:var(--sage); border:none; font-weight:600; font-size:12.5px; padding:8px 16px; border-radius:8px; cursor:pointer; }
+
+  /* ── Modal ── */
+  .overlay{ position:fixed; inset:0; background:rgba(30,38,32,0.5); display:none; align-items:center; justify-content:center; padding:20px; z-index:50; }
+  .overlay.show{ display:flex; }
+  .modal{ background:var(--cream); border-radius:18px; max-width:460px; width:100%; overflow:hidden; box-shadow:0 30px 70px rgba(0,0,0,0.3); }
+  .modal-head{ background:var(--forest); color:var(--cream); padding:22px 26px; }
+  .modal-head h3{ font-family:var(--serif); font-size:19px; font-weight:600; }
+  .modal-head p{ font-size:12.5px; color:rgba(250,250,245,0.66); margin-top:3px; }
+  .modal-body{ padding:24px 26px; }
+  .field{ margin-bottom:15px; }
+  .field label{ display:block; font-size:11.5px; font-weight:600; letter-spacing:0.03em; text-transform:uppercase; color:var(--stone); margin-bottom:6px; }
+  .field input, .field select{ width:100%; font-family:var(--sans); font-size:14px; color:var(--forest); padding:10px 12px; border:1px solid var(--border); border-radius:9px; background:var(--white); }
+  .field input:focus, .field select:focus{ outline:none; border-color:var(--sage-mid); box-shadow:0 0 0 3px rgba(107,158,126,0.15); }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .modal-foot{ display:flex; gap:10px; padding:0 26px 24px; }
+  .modal-foot .btn{ flex:1; }
+
+  /* ── Recipient preview ── */
+  .preview-modal{ max-width:400px; }
+  .phone{ background:var(--white); border-radius:14px; padding:22px; text-align:center; }
+  .phone .avatar{ width:52px; height:52px; border-radius:50%; background:var(--sage-light); color:var(--sage); font-family:var(--serif); font-size:22px; font-weight:600; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; }
+  .phone .pname{ font-family:var(--serif); font-size:19px; font-weight:600; }
+  .phone .pmsg{ font-size:13px; color:var(--stone); margin-top:4px; }
+  .phone .gate{ margin-top:18px; padding:16px; border-radius:12px; }
+  .phone .gate.open{ background:var(--sage-light); }
+  .phone .gate.open .gt{ color:var(--sage); font-weight:700; font-size:13px; }
+  .phone .gate.closed{ background:#F4DAD7; }
+  .phone .gate.closed .gt{ color:var(--heart); font-weight:700; font-size:13px; }
+  .phone .gate .gs{ font-size:12px; color:var(--stone); margin-top:5px; }
+  .phone .kfeat{ list-style:none; margin-top:14px; text-align:left; }
+  .phone .kfeat li{ font-size:12.5px; padding:5px 0 5px 22px; position:relative; color:var(--forest); }
+  .phone .kfeat li::before{ content:'✓'; position:absolute; left:2px; color:var(--sage); font-weight:700; }
+  .phone .kfeat.dim li{ color:#BFC4BC; }
+  .phone .kfeat.dim li::before{ color:#CDD5CD; }
+
+  /* ── Login gateway ── */
+  #login{ max-width:420px; margin:6vh auto; }
+  #login .masthead{ padding:38px 40px 34px; border-radius:20px 20px 0 0; text-align:center; }
+  #login .masthead .brand-word{ font-size:34px; }
+  #login .url{ font-size:11px; color:rgba(250,250,245,0.5); margin-top:10px; letter-spacing:0.04em; }
+  #login .lbody{ background:var(--cream); border-radius:0 0 20px 20px; padding:30px 40px 34px; box-shadow:0 24px 60px rgba(30,38,32,0.16); }
+  #login h1{ font-family:var(--serif); font-size:21px; font-weight:600; text-align:center; }
+  #login .lsub{ font-size:13px; color:var(--stone); text-align:center; margin-top:6px; margin-bottom:22px; }
+  #login .btn.primary{ width:100%; padding:13px; font-size:14px; }
+  #login .lfoot{ font-size:11.5px; color:var(--stone); text-align:center; margin-top:16px; }
+
+  .toast{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(120px); background:var(--forest); color:var(--cream); font-size:13px; padding:13px 22px; border-radius:30px; box-shadow:0 12px 30px rgba(0,0,0,0.28); transition:transform .35s cubic-bezier(.2,.8,.2,1); z-index:100; max-width:90%; }
+  .toast.show{ transform:translateX(-50%) translateY(0); }
+
+  @media(max-width:720px){
+    .kpis{ grid-template-columns:1fr 1fr; } .acct-grid{ grid-template-columns:1fr; }
+    .masthead,.toolbar,.accounts{ padding-left:26px; padding-right:26px; }
+    .org-row{ flex-direction:column; align-items:flex-start; } .admin-badge{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN GATEWAY (separate B2B front door) ============ -->
+<div id="login" class="sheet" style="box-shadow:none;background:none">
+  <div class="masthead">
+    <div class="brand-eyebrow">Your Kitchen · For Organizations</div>
+    <div class="brand-word">YourKitchen</div>
+    <div class="url">yourkitchen.app / business</div>
+  </div>
+  <div class="lbody">
+    <h1>Organization Console</h1>
+    <p class="lsub">Sign in to manage the accounts your organization sponsors.</p>
+    <div class="field"><label>Work email</label><input type="email" value="director@gracecommunity.org" id="loginEmail"></div>
+    <div class="field"><label>Access code</label><input type="password" value="••••••••" id="loginPass"></div>
+    <button class="btn primary" onclick="enterConsole()">Enter console</button>
+    <p class="lfoot">Separate from the personal YourKitchen app. Built for care coordinators.</p>
+  </div>
+</div>
+
+<!-- ============ CONSOLE ============ -->
+<div id="console" class="sheet" style="display:none">
+  <div class="masthead">
+    <div class="brand-eyebrow">Your Kitchen · Organization Console</div>
+    <div class="brand-word">YourKitchen</div>
+    <span class="biz-tag">Business · Sponsored Care</span>
+    <div class="org-row">
+      <div>
+        <div class="org-name" id="cfgChurch">Grace Community Church</div>
+        <div class="org-sub" id="cfgSub">Care ministry · Waller, TX · Pilot pool</div>
+      </div>
+      <div class="admin-badge">
+        Admin · <b id="cfgAdmin">Pastor Dwight Reeves</b><br>
+        <span id="cfgEmail">director@gracecommunity.org</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="pool-line">
+      <div class="pool-seats" id="seats"></div>
+      <div class="pool-text" id="poolText"></div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="actions">
+      <button class="btn primary" id="provisionBtn" onclick="openProvision()">+ Set up recipient account</button>
+      <button class="btn ghost" onclick="exportData()">Export data</button>
+      <div class="demo-ctrl">
+        <span class="demo-lbl">Presenter</span>
+        <button class="btn demo" onclick="advanceTime(7)">Simulate + 7 days</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="accounts">
+    <h2>Sponsored accounts</h2>
+    <p class="hint">Each account gives one recipient full YourKitchen access for the window you set. When the window ends, the slot recycles back to your pool.</p>
+    <div class="acct-grid" id="acctGrid"></div>
+  </div>
+</div>
+
+<!-- ============ PROVISION MODAL ============ -->
+<div class="overlay" id="provisionOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Set up a recipient account</h3>
+      <p>They'll get a text to claim it and set up their kitchen.</p>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label>Recipient name</label><input id="fName" placeholder="e.g. Adrian Dillard"></div>
+      <div class="two">
+        <div class="field"><label>Email</label><input id="fEmail" type="email" placeholder="name@email.com"></div>
+        <div class="field"><label>Phone</label><input id="fPhone" placeholder="(###) ###-####"></div>
+      </div>
+      <div class="field">
+        <label>Reason for care</label>
+        <select id="fReason">
+          <option value="new_baby">New baby</option>
+          <option value="illness">Illness / recovery</option>
+          <option value="bereavement">Bereavement</option>
+          <option value="deployment">Deployment</option>
+          <option value="caregiving">Caregiving / eldercare</option>
+          <option value="celebration">Celebration</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Estimated length of support (sets the access window)</label>
+        <select id="fWeeks">
+          <option value="2">2 weeks</option>
+          <option value="4">4 weeks</option>
+          <option value="6" selected>6 weeks</option>
+          <option value="8">8 weeks</option>
+          <option value="12">12 weeks</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" onclick="closeProvision()">Cancel</button>
+      <button class="btn primary" onclick="createAccount()">Create & send invite</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RECIPIENT PREVIEW MODAL ============ -->
+<div class="overlay" id="previewOverlay">
+  <div class="modal preview-modal">
+    <div class="modal-head">
+      <h3>What the recipient sees</h3>
+      <p>Their scoped view — kitchen only, no billing, no other accounts.</p>
+    </div>
+    <div class="modal-body" id="previewBody"></div>
+    <div class="modal-foot"><button class="btn ghost" onclick="closePreview()" style="flex:1">Close</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ==================================================================
+  //  EDIT YOUR ORGANIZATION HERE  — change these four lines only
+  // ==================================================================
+  var CFG = {
+    church: "Grace Community Church",
+    sub:    "Care ministry · Waller, TX · Pilot pool",
+    admin:  "Pastor Dwight Reeves",
+    email:  "director@gracecommunity.org"
+  };
+  // ==================================================================
+  (function(){
+    var s=function(id,v){var e=document.getElementById(id); if(e) e.textContent=v;};
+    s('cfgChurch',CFG.church); s('cfgSub',CFG.sub); s('cfgAdmin',CFG.admin); s('cfgEmail',CFG.email);
+    var le=document.getElementById('loginEmail'); if(le) le.value=CFG.email;
+  })();
+
+  var REASONS = {
+    new_baby:{label:'New baby', color:'#6B9E7E'},
+    illness:{label:'Illness / recovery', color:'#C17F47'},
+    bereavement:{label:'Bereavement', color:'#6B7066'},
+    deployment:{label:'Deployment', color:'#3D6B4F'},
+    caregiving:{label:'Caregiving / eldercare', color:'#B88B4A'},
+    celebration:{label:'Celebration', color:'#C0463B'},
+    other:{label:'Other', color:'#8A9A8E'}
+  };
+
+  var POOL = 5;
+  var idSeq = 100;
+
+  // Seed accounts at different states so the demo starts alive
+  var accounts = [
+    { id:++idSeq, name:'Adrian Dillard', email:'adrian.d@email.com', phone:'(210) 555-0142', reason:'new_baby', weeks:8, daysLeft:41 },
+    { id:++idSeq, name:'Marlene Otis',   email:'m.otis@email.com',   phone:'(936) 555-0188', reason:'illness',  weeks:6, daysLeft:5  }
+  ];
+
+  function statusOf(a){ if(a.daysLeft<=0) return 'ended'; if(a.daysLeft<=7) return 'expiring'; return 'active'; }
+  function usedSlots(){ return accounts.filter(function(a){return statusOf(a)!=='ended';}).length; }
+  function availSlots(){ return POOL - usedSlots(); }
+
+  function render(){
+    // pool seats
+    var used = usedSlots();
+    var seats = '';
+    for(var i=0;i<POOL;i++){ seats += '<div class="seat'+(i<used?' used':'')+'"></div>'; }
+    document.getElementById('seats').innerHTML = seats;
+    document.getElementById('poolText').innerHTML = '<b>'+used+'</b> of <b>'+POOL+'</b> accounts active · <b>'+availSlots()+'</b> available';
+
+    // KPIs
+    var active = accounts.filter(function(a){return statusOf(a)==='active';}).length;
+    var expiring = accounts.filter(function(a){return statusOf(a)==='expiring';}).length;
+    var ended = accounts.filter(function(a){return statusOf(a)==='ended';}).length;
+    document.getElementById('kpis').innerHTML =
+      kpi(active,'Active recipients','') +
+      kpi(expiring,'Expiring within 7 days', expiring?'warn':'') +
+      kpi(ended,'Access ended', ended?'end':'') +
+      kpi(availSlots(),'Slots available','');
+
+    // provision button disabled when pool full
+    document.getElementById('provisionBtn').disabled = availSlots()<=0;
+
+    // accounts grid
+    var grid = '';
+    accounts.forEach(function(a){ grid += card(a); });
+    // empty slots
+    for(var j=0;j<availSlots();j++){
+      grid += '<div class="empty-slot"><div>Open slot</div><button onclick="openProvision()">Set up a recipient</button></div>';
+    }
+    document.getElementById('acctGrid').innerHTML = grid;
+  }
+
+  function kpi(n,l,cls){ return '<div class="kpi '+cls+'"><div class="num">'+n+'</div><div class="lbl">'+l+'</div></div>'; }
+
+  function card(a){
+    var st = statusOf(a);
+    var r = REASONS[a.reason];
+    var total = a.weeks*7;
+    var pct = Math.max(0, Math.min(100, Math.round((a.daysLeft/total)*100)));
+    var tone = st==='ended'?'end':(st==='expiring'?'warn':'ok');
+    var chipTxt = st==='ended'?'Access ended':(st==='expiring'?'Expiring soon':'Active');
+    var cdLine = st==='ended'
+      ? '<span class="cd-days end">Access ended</span><span class="cd-len">'+a.weeks+'-week window complete</span>'
+      : '<span class="cd-days '+tone+'">'+a.daysLeft+' days left</span><span class="cd-len">of '+a.weeks+'-week window</span>';
+    var actions = st==='ended'
+      ? '<button class="mini preview" onclick="preview('+a.id+')">Preview</button><button class="mini recycle" onclick="recycle('+a.id+')">Recycle slot</button>'
+      : '<button class="mini preview" onclick="preview('+a.id+')">Preview recipient view</button>';
+    return ''+
+      '<div class="acct '+(st==='ended'?'ended':'')+'">'+
+        '<div class="acct-top"><div class="acct-name">'+a.name+'</div><span class="chip '+st+'">'+chipTxt+'</span></div>'+
+        '<div class="acct-contact">'+a.email+' · '+a.phone+'</div>'+
+        '<div class="reason"><span class="dot" style="background:'+r.color+'"></span>'+r.label+'</div>'+
+        '<div class="countdown"><div class="cd-head">'+cdLine+'</div>'+
+          '<div class="bar"><div class="fill '+tone+'" style="width:'+pct+'%"></div></div></div>'+
+        '<div class="acct-actions">'+actions+'</div>'+
+      '</div>';
+  }
+
+  // ── Login ──
+  function enterConsole(){
+    document.getElementById('login').style.display='none';
+    document.getElementById('console').style.display='block';
+    render();
+  }
+
+  // ── Provision ──
+  function openProvision(){
+    if(availSlots()<=0){ toast('Pool is full — recycle an ended slot to free one up.'); return; }
+    document.getElementById('fName').value='';
+    document.getElementById('fEmail').value='';
+    document.getElementById('fPhone').value='';
+    document.getElementById('fReason').value='new_baby';
+    document.getElementById('fWeeks').value='6';
+    document.getElementById('provisionOverlay').classList.add('show');
+  }
+  function closeProvision(){ document.getElementById('provisionOverlay').classList.remove('show'); }
+
+  function createAccount(){
+    var name=document.getElementById('fName').value.trim();
+    var email=document.getElementById('fEmail').value.trim();
+    var phone=document.getElementById('fPhone').value.trim();
+    if(!name || !phone){ toast('Add at least a name and phone to send the invite.'); return; }
+    var weeks=parseInt(document.getElementById('fWeeks').value);
+    accounts.push({
+      id:++idSeq, name:name,
+      email:email||'—', phone:phone,
+      reason:document.getElementById('fReason').value,
+      weeks:weeks, daysLeft:weeks*7
+    });
+    closeProvision();
+    render();
+    toast('Invite texted to '+name+'. Account active for '+weeks+' weeks.');
+  }
+
+  // ── Recycle & time ──
+  function recycle(id){
+    accounts = accounts.filter(function(a){return a.id!==id;});
+    render();
+    toast('Slot recycled back into the pool.');
+  }
+  function advanceTime(days){
+    accounts.forEach(function(a){ if(statusOf(a)!=='ended'){ a.daysLeft -= days; if(a.daysLeft<0) a.daysLeft=0; } });
+    render();
+    toast('Advanced '+days+' days. Countdowns updated.');
+  }
+
+  // ── Recipient preview (the gateway made tangible) ──
+  function preview(id){
+    var a = accounts.find(function(x){return x.id===id;});
+    var st = statusOf(a);
+    var initials = a.name.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+    var body;
+    if(st==='ended'){
+      body =
+        '<div class="phone"><div class="avatar">'+initials+'</div>'+
+        '<div class="pname">'+a.name+'\'s Kitchen</div>'+
+        '<div class="pmsg">Sponsored by '+CFG.church+'</div>'+
+        '<div class="gate closed"><div class="gt">Access ended</div>'+
+        '<div class="gs">This kitchen\'s support window has closed. Reach out to the church if you need more time.</div></div>'+
+        '<ul class="kfeat dim"><li>Restaurants</li><li>Meal calendar</li><li>Delivery address</li></ul></div>';
+    } else {
+      body =
+        '<div class="phone"><div class="avatar">'+initials+'</div>'+
+        '<div class="pname">'+a.name+'\'s Kitchen</div>'+
+        '<div class="pmsg">Sponsored by '+CFG.church+'</div>'+
+        '<div class="gate open"><div class="gt">Active — '+a.daysLeft+' days left</div>'+
+        '<div class="gs">Full access to set up your kitchen and receive meals.</div></div>'+
+        '<ul class="kfeat"><li>Choose restaurants</li><li>Open meal dates</li><li>Set delivery address</li><li>Confirm each meal by text</li></ul></div>';
+    }
+    document.getElementById('previewBody').innerHTML = body;
+    document.getElementById('previewOverlay').classList.add('show');
+  }
+  function closePreview(){ document.getElementById('previewOverlay').classList.remove('show'); }
+
+  // ── Export ──
+  function exportData(){
+    var rows = [['Recipient','Email','Phone','Reason','Window (weeks)','Days left','Status']];
+    accounts.forEach(function(a){
+      rows.push([a.name, a.email, a.phone, REASONS[a.reason].label, a.weeks, Math.max(0,a.daysLeft), statusOf(a)]);
+    });
+    var csv = rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+    var blob = new Blob([csv], {type:'text/csv'});
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href=url; link.download='grace-community-yourkitchen-accounts.csv';
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    toast('Account data exported (CSV).');
+  }
+
+  // ── Toast ──
+  var toastTimer;
+  function toast(msg){
+    var t=document.getElementById('toast');
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+</script>
+<script>
+(function(){var last=0;function report(){var h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight);if(Math.abs(h-last)>2){last=h;try{parent.postMessage({ykHeight:h},'*');}catch(e){}}}
+window.addEventListener('load',function(){report();setTimeout(report,200);setTimeout(report,600);});
+window.addEventListener('resize',report);
+if(window.ResizeObserver){try{new ResizeObserver(report).observe(document.body);}catch(e){}}
+document.addEventListener('click',function(){setTimeout(report,120);setTimeout(report,400);});})();
+</script>
+</body>
+</html>
