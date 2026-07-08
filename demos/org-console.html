@@ -177,7 +177,7 @@
   <div class="lbody">
     <h1>Organization Console</h1>
     <p class="lsub">Sign in to manage the accounts your organization sponsors.</p>
-    <div class="field"><label>Work email</label><input type="email" value="director@gracecommunity.org" id="loginEmail"></div>
+    <div class="field"><label>Work email</label><input type="email" value="jcrowe@yourvtupc.com" id="loginEmail"></div>
     <div class="field"><label>Access code</label><input type="password" value="••••••••" id="loginPass"></div>
     <button class="btn primary" onclick="enterConsole()">Enter console</button>
     <p class="lfoot">Separate from the personal YourKitchen app. Built for care coordinators.</p>
@@ -287,10 +287,10 @@
   //  EDIT YOUR ORGANIZATION HERE  — change these four lines only
   // ==================================================================
   var CFG = {
-    church: "Grace Community Church",
-    sub:    "Care ministry · Waller, TX · Pilot pool",
-    admin:  "Pastor Dwight Reeves",
-    email:  "director@gracecommunity.org"
+    church: "Victory Tabernacle UPC",
+    sub:    "Pentecostal church · Tampa, Fl · Pilot pool",
+    admin:  "Pastor Jason Crowe",
+    email:  "jcrowe@yourvtupc.com"
   };
   // ==================================================================
   (function(){
@@ -315,7 +315,7 @@
   // Seed accounts at different states so the demo starts alive
   var accounts = [
     { id:++idSeq, name:'Adrian Dillard', email:'adrian.d@email.com', phone:'(210) 555-0142', reason:'new_baby', weeks:8, daysLeft:41 },
-    { id:++idSeq, name:'Marlene Otis',   email:'m.otis@email.com',   phone:'(936) 555-0188', reason:'illness',  weeks:6, daysLeft:5  }
+    { id:++idSeq, name:'Marlene Williams',   email:'m.williams@email.com',   phone:'(936) 555-0188', reason:'illness',  weeks:6, daysLeft:5  }
   ];
 
   function statusOf(a){ if(a.daysLeft<=0) return 'ended'; if(a.daysLeft<=7) return 'expiring'; return 'active'; }
