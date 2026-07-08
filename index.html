@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>YourKitchen for Business</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet"><style>
+  :root{
+    --sage:#3D6B4F; --sage-mid:#6B9E7E; --sage-light:#EAF2ED; --cream:#FAFAF5;
+    --forest:#1E2620; --stone:#6B7066; --border:#DDE8E0; --white:#FFFFFF;
+    --gold:#B88B4A; --gold-deep:#C17F47; --gold-light:#F5EBDD; --heart:#C0463B;
+    --serif:'Lora',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{ font-family:var(--sans); color:var(--forest); background:#EDEDE6; -webkit-font-smoothing:antialiased; line-height:1.55; }
+  a{ color:inherit; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:0 22px; }
+
+  /* nav */
+  .topbar{ background:var(--forest); color:var(--cream); position:sticky; top:0; z-index:40; }
+  .topbar .in{ max-width:1000px; margin:0 auto; padding:0 22px; height:60px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .topbar .wm{ font-family:var(--serif); font-size:20px; font-weight:600; }
+  .topbar .wm small{ font-family:var(--sans); font-size:10px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:var(--sage-mid); margin-left:8px; }
+  .topbar nav{ display:flex; gap:4px; flex-wrap:wrap; }
+  .topbar nav a{ font-size:13px; font-weight:600; color:rgba(250,250,245,0.66); text-decoration:none; padding:7px 12px; border-radius:8px; }
+  .topbar nav a:hover{ color:#fff; background:rgba(255,255,255,0.08); }
+  .topbar nav a.on{ background:var(--sage-mid); color:var(--forest); }
+
+  /* hero */
+  .hero{ background:var(--forest); color:var(--cream); position:relative; overflow:hidden; padding:52px 0 46px; }
+  .hero::after{ content:''; position:absolute; right:-90px; top:-90px; width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, rgba(107,158,126,0.22), transparent 70%); }
+  .eyebrow{ font-size:11px; font-weight:600; letter-spacing:0.36em; text-transform:uppercase; color:var(--sage-mid); }
+  .hero h1{ font-family:var(--serif); font-weight:500; font-size:34px; line-height:1.25; margin-top:14px; max-width:680px; position:relative; z-index:1; }
+  .hero p.sub{ font-size:15px; color:rgba(250,250,245,0.72); margin-top:14px; max-width:600px; position:relative; z-index:1; }
+  .tagpill{ display:inline-block; margin-top:18px; background:rgba(184,139,74,0.16); border:1px solid rgba(184,139,74,0.42); color:#E7CF9F; font-size:10.5px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; padding:6px 13px; border-radius:30px; position:relative; z-index:1; }
+
+  section.blk{ padding:40px 0; }
+  .sec-eyebrow{ font-size:10.5px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--sage); margin-bottom:8px; }
+  h2{ font-family:var(--serif); font-size:24px; font-weight:600; letter-spacing:-0.01em; margin-bottom:8px; }
+  .lead{ font-size:14.5px; color:var(--stone); max-width:640px; margin-bottom:24px; }
+
+  /* audience cards */
+  .aud{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .acard{ background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px 22px; text-decoration:none; color:inherit; display:flex; flex-direction:column; transition:.16s; }
+  .acard:hover{ border-color:var(--sage-mid); transform:translateY(-3px); box-shadow:0 14px 30px rgba(30,38,32,0.1); }
+  .acard .ic{ font-family:var(--serif); font-size:26px; color:var(--sage); }
+  .acard h3{ font-family:var(--serif); font-size:19px; font-weight:600; margin-top:12px; }
+  .acard .who{ font-size:11.5px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--stone); margin-top:4px; }
+  .acard p{ font-size:13px; color:var(--forest); margin-top:12px; flex:1; }
+  .acard .go{ font-size:13px; font-weight:700; color:var(--sage); margin-top:16px; }
+
+  /* steps */
+  .steps{ display:grid; gap:14px; }
+  .step{ background:var(--white); border:1px solid var(--border); border-radius:14px; padding:18px 22px; display:flex; gap:16px; align-items:flex-start; }
+  .step .n{ font-family:var(--serif); font-size:22px; font-weight:600; color:var(--sage); background:var(--sage-light); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .step .t{ font-size:14.5px; font-weight:600; }
+  .step .d{ font-size:13px; color:var(--stone); margin-top:3px; }
+
+  /* feature + access grids */
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .grid2{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .fcard{ background:var(--white); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+  .fcard .ft{ font-size:13.5px; font-weight:600; margin-bottom:5px; }
+  .fcard .fb{ font-size:12px; color:var(--stone); line-height:1.5; }
+  .role{ background:var(--sage-light); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+  .role .rn{ font-size:13.5px; font-weight:700; color:var(--sage); }
+  .role .rd{ font-size:12px; color:var(--forest); margin-top:5px; line-height:1.5; }
+
+  /* demo device frame */
+  .demoblk{ margin-top:8px; }
+  .demoblk .cap{ font-size:12px; color:var(--stone); margin-bottom:10px; }
+  .demoblk .cap b{ color:var(--sage); }
+  .device{ background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 14px 34px rgba(30,38,32,0.12); }
+  .device .bar{ height:34px; background:var(--forest); display:flex; align-items:center; padding:0 14px; gap:6px; }
+  .device .bar i{ width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,0.28); display:inline-block; }
+  .device iframe{ width:100%; height:760px; border:none; display:block; background:#EDEDE6; }
+
+  /* pricing / cta */
+  .cta{ background:var(--sage-light); border:1px solid var(--border); border-radius:16px; padding:26px 28px; text-align:center; }
+  .cta h3{ font-family:var(--serif); font-size:20px; font-weight:600; }
+  .cta p{ font-size:13.5px; color:var(--stone); margin-top:6px; }
+  .cta .price{ font-family:var(--serif); font-size:26px; font-weight:600; color:var(--sage); margin-top:12px; }
+  .cta .price small{ font-size:13px; color:var(--stone); font-weight:400; }
+
+  footer{ background:var(--forest); color:rgba(250,250,245,0.6); padding:28px 0; font-size:12px; }
+  footer .fw{ font-family:var(--serif); color:var(--cream); font-size:15px; margin-bottom:6px; }
+
+  /* gate */
+  #gate{ position:fixed; inset:0; z-index:9999; background:var(--forest); display:flex; align-items:center; justify-content:center; padding:20px; }
+  #gate .box{ text-align:center; max-width:360px; width:100%; }
+  #gate .gwm{ font-family:var(--serif); font-size:30px; font-weight:600; color:var(--cream); }
+  #gate .geye{ font-size:10.5px; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:var(--sage-mid); }
+  #gate p{ font-size:13px; color:rgba(250,250,245,0.6); margin:16px 0 20px; }
+  #gate input{ width:100%; font-family:var(--sans); font-size:15px; text-align:center; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.06); color:var(--cream); }
+  #gate input:focus{ outline:none; border-color:var(--sage-mid); }
+  #gate button{ width:100%; margin-top:12px; font-family:var(--sans); font-size:14px; font-weight:600; padding:12px; border-radius:10px; border:none; background:var(--sage-mid); color:var(--forest); cursor:pointer; }
+  #gate .err{ color:#F0B5AE; font-size:12px; margin-top:12px; min-height:16px; }
+  .shake{ animation:sh .4s; }
+  @keyframes sh{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+
+  @media(max-width:760px){
+    .aud,.grid3{ grid-template-columns:1fr; } .grid2{ grid-template-columns:1fr; }
+    .hero h1{ font-size:27px; } .device iframe{ height:620px; }
+    .topbar .in{ height:auto; flex-direction:column; align-items:flex-start; padding:12px 16px; }
+  }
+</style></head><body>
+  <div id="gate"><div class="box">
+    <div class="geye">Private Preview</div>
+    <div class="gwm">YourKitchen</div>
+    <p>This preview is password protected. Enter the access code to continue.</p>
+    <input id="gpw" type="password" placeholder="Access code" autocomplete="off">
+    <button id="gbtn">Enter</button>
+    <div class="err" id="gerr"></div>
+  </div></div>
+<div class="topbar"><div class="in"><div class="wm">YourKitchen<small>for Business</small></div><nav><a href="index.html" class="on">Overview</a><a href="faith.html">Faith Community</a><a href="payer.html">Payer &amp; MCO</a><a href="enterprise.html">Enterprise</a></nav></div></div>
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">YourKitchen for Business</div>
+  <h1>The nutrition benefit members actually use.</h1>
+  <p class="sub">A recipient-centric meal platform that activates a person's own support network to deliver meals during the highest-risk seasons of life. Choose the track that fits your organization.</p>
+  <span class="tagpill">Private Preview</span>
+</div></div>
+
+<section class="blk"><div class="wrap">
+  <div class="sec-eyebrow">Choose your track</div>
+  <h2>Built for three kinds of organizations</h2>
+  <p class="lead">Each track walks through the setup, the features, the access model, and a live interactive demo tailored to that buyer.</p>
+  <div class="aud">
+    <a class="acard" href="faith.html">
+      <div class="ic">&#9733;</div><h3>Faith Community</h3><div class="who">Churches &middot; ministries</div>
+      <p>Run your care ministry the right way &mdash; a rotating pool of accounts your congregation activates for families in a hard season.</p>
+      <div class="go">Explore the demo &rarr;</div>
+    </a>
+    <a class="acard" href="payer.html">
+      <div class="ic">&#43;</div><h3>Payer &amp; MCO</h3><div class="who">Health plans &middot; managed care</div>
+      <p>Food-as-Medicine that members actually use &mdash; with clinical nutrition protocols, outcomes surveys, and an ROI you can model.</p>
+      <div class="go">Explore the demo &rarr;</div>
+    </a>
+    <a class="acard" href="enterprise.html">
+      <div class="ic">&#9632;</div><h3>Enterprise</h3><div class="who">Employers &middot; large orgs</div>
+      <p>Manage a benefit at scale &mdash; a filterable member console with roles, bulk operations, drill-down data, and safe recovery.</p>
+      <div class="go">Explore the demo &rarr;</div>
+    </a>
+  </div>
+</div></section>
+
+<section class="blk" style="background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)"><div class="wrap">
+  <div class="sec-eyebrow">How it works</div>
+  <h2>The same engine under every track</h2>
+  <div class="steps" style="margin-top:18px">
+    <div class="step"><div class="n">1</div><div><div class="t">Set up a kitchen</div><div class="d">An organization or family picks preferred restaurants and opens calendar dates.</div></div></div>
+    <div class="step"><div class="n">2</div><div><div class="t">Activate the village</div><div class="d">A share link lets friends, family, and community claim dates and send meals.</div></div></div>
+    <div class="step"><div class="n">3</div><div><div class="t">Confirm &amp; deliver</div><div class="d">No charge fires until the recipient confirms by text; the meal is delivered.</div></div></div>
+    <div class="step"><div class="n">4</div><div><div class="t">Track &amp; report</div><div class="d">Ratings, utilization, on-time rates, and exportable reports across the whole population.</div></div></div>
+  </div>
+</div></section>
+<footer><div class="wrap"><div class="fw">Your kitchen, covered.</div>Private B2B preview &middot; YourKitchen LLC &middot; Confidential. Figures shown are illustrative demo data.</div></footer><script>
+  (function(){
+    var HASH="93fe04d03c10509a343fc9c40eed0c1c9e0a5006de03ace1e904a8cb56fc7c3b", KEY="yk_b2b_auth";
+    async function sha(s){var b=new TextEncoder().encode(s);var h=await crypto.subtle.digest('SHA-256',b);return Array.prototype.map.call(new Uint8Array(h),function(x){return x.toString(16).padStart(2,'0');}).join('');}
+    function reveal(){var g=document.getElementById('gate'); if(g) g.remove(); document.documentElement.style.overflow='';}
+    document.documentElement.style.overflow='hidden';
+    if(sessionStorage.getItem(KEY)==='ok'){ document.addEventListener('DOMContentLoaded',reveal); return; }
+    document.addEventListener('DOMContentLoaded',function(){
+      var inp=document.getElementById('gpw'), btn=document.getElementById('gbtn'), err=document.getElementById('gerr'), box=document.querySelector('#gate .box');
+      async function tryit(){
+        var h=await sha(inp.value);
+        if(h===HASH){ sessionStorage.setItem(KEY,'ok'); reveal(); }
+        else { err.textContent='Incorrect password.'; box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake'); inp.value=''; inp.focus(); }
+      }
+      btn.addEventListener('click',tryit);
+      inp.addEventListener('keydown',function(e){ if(e.key==='Enter') tryit(); });
+      inp.focus();
+    });
+  })();
+</script></body></html>
